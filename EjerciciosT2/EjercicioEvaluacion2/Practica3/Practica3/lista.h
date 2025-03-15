@@ -1,13 +1,13 @@
 // Incluye aquí el usuario del grupo y el/los nombre(s) de quien(es) haya(n) realizado la solución
-// USUARIO DOMJUDGE: ED-B07
-// NOMBRE PARTICIPANTE 1: Candela Esquinas
-// NOMBRE PARTICIPANTE 2: Miguel Sevilla
+// USUARIO DOMJUDGE:  
+// NOMBRE PARTICIPANTE 1:
+// NOMBRE PARTICIPANTE 2:
 
 
 /**
   @file lista.h
 
-  Implementación del TAD Lista, utilizando una
+  Implementación del TAD Lista, utilizando una 
   lista doblemente enlazada.
 
   Estructura de Datos y Algoritmos
@@ -63,28 +63,27 @@ private:
 	class Nodo {
 	public:
 		Nodo() : _sig(NULL), _ant(NULL) {}
-		Nodo(const T& elem) : _elem(elem), _sig(NULL), _ant(NULL) {}
-		Nodo(Nodo* ant, const T& elem, Nodo* sig) :
-			_elem(elem), _sig(sig), _ant(ant) {
-		}
+		Nodo(const T &elem) : _elem(elem), _sig(NULL), _ant(NULL) {}
+		Nodo(Nodo *ant, const T &elem, Nodo *sig) : 
+		    _elem(elem), _sig(sig), _ant(ant) {}
 
 		T _elem;
-		Nodo* _sig;
-		Nodo* _ant;
+		Nodo *_sig;
+		Nodo *_ant;
 	};
 
 	/**
 	 Inserta un elemento entre el nodo apuntado por nodo1 y el nodo apuntado por nodo2.
 	 Devuelve el puntero al nodo creado.
 	 Caso general: los dos nodos existen.
-		nodo1->_sig == nodo2
-		nodo2->_ant == nodo1
+	    nodo1->_sig == nodo2
+	    nodo2->_ant == nodo1
 	 Casos especiales: alguno de los nodos (o los dos) no existe
-		nodo1 == NULL --> insertamos por el principio
+	    nodo1 == NULL --> insertamos por el principio
 		nodo2 == NULL --> insertamos por el final
 	*/
-	static Nodo* insertaElem(const T& e, Nodo* nodo1, Nodo* nodo2) {
-		Nodo* nuevo = new Nodo(nodo1, e, nodo2);
+	static Nodo *insertaElem(const T &e, Nodo *nodo1, Nodo *nodo2) {
+		Nodo *nuevo = new Nodo(nodo1, e, nodo2);
 		if (nodo1 != NULL) // hay un nodo anterior al nuevo
 			nodo1->_sig = nuevo;
 		if (nodo2 != NULL) // hay un nodo posterior al nuevo
@@ -99,10 +98,10 @@ private:
 	 Casos especiales: algunos de los nodos (anterior o siguiente
 	 a n) no existen.
 	*/
-	static void borraElem(Nodo* n) {
+	static void borraElem(Nodo *n) {
 		assert(n != NULL);
-		Nodo* ant = n->_ant;
-		Nodo* sig = n->_sig;
+		Nodo *ant = n->_ant;
+		Nodo *sig = n->_sig;
 		if (ant != NULL) // hay nodo predecesor
 			ant->_sig = sig;
 		if (sig != NULL) // hay nodo sucesor
@@ -110,11 +109,11 @@ private:
 		delete n;
 	}
 
-	void copia(const Lista<T>& other) {
+	void copia(const Lista<T> &other) {
 		_prim = NULL;
 		_ult = NULL;
 		_numElems = 0;
-		Nodo* act = other._prim;
+		Nodo *act = other._prim;
 		while (act != NULL) {
 			pon_final(act->_elem);
 			act = act->_sig;
@@ -130,7 +129,7 @@ private:
 
 	void libera() {
 		while (_prim != NULL) {
-			Nodo* aux = _prim;
+			Nodo *aux = _prim;
 			_prim = _prim->_sig;
 			delete aux;
 		}
@@ -138,7 +137,7 @@ private:
 
 
 	// Puntero al primer y último elemento
-	Nodo* _prim, * _ult;
+	Nodo *_prim, *_ult;
 	// Número de elementos (número de nodos entre _prim y _ult)
 	unsigned int _numElems;
 
@@ -146,41 +145,14 @@ public:
 
 	/**
 	COMPLEJIDAD: Determinar aquí, justificadamente, la complejidad de la operación cortaPorK
-     El coste de cortaPorK es O(k), ya que se recorre la lista hasta la posici—n k antes de modificar los punteros.
+
+
 	**/
-
 	void cortaPorK(unsigned int k, Lista<T>& destino) {
+		// A IMPLEMENTAR
 		
-		Nodo* aux = _prim;
-		int i = 1;
-        //Comprobamos si la lista es vacia o si el numero K es mayor que el numero
-        //de elementos porque en ese escenario no es necesario cortar en ningœn punto
-		if (!esVacia() && k <= _numElems) {
-        
-			while (i < k && aux != nullptr) {
-                //Nuestro objetivo con este bucle es llegar a la posicion de la lista que queremos que sea la
-                //primera de la lista destino
-				aux = aux->_sig;
-				i++;
-			}
-            // Se establecen los punteros de inicio y fin de la lista destino,
-            // reutilizando los nodos sin copiar datos.
-			destino._prim = aux;
-			destino._ult = _ult;
-            
-            // Actualizamos los enlaces de la lista original:
-            _ult = aux->_ant; // Si aux es el primer nodo, aux->_ant ser‡ nullptr, lo que implica que la lista original quedar‡ vac’a                 // (_prim y _ult ser‡n nullptr).
-            if (aux->_ant != nullptr)
-                aux->_ant->_sig = nullptr;
-            else // Si se mueve toda la lista (aux es el primer nodo), actualizamos _prim a nullptr.
-                _prim = nullptr;
-
-            //Desconectamos la primera posici—n (aux) con la lista anterior
-			aux->_ant = nullptr;
-			destino._numElems = _numElems - i + 1;
-			_numElems = i - 1;						
-		}	
 	}
+ 
 
 	void imprime1() const {
 		Nodo* n = _prim;
@@ -201,14 +173,14 @@ public:
 	}
 
 	void imprime_inv1() const {
-		Nodo* n = _ult;
-		unsigned int pos;
-		pos = _numElems;
-		while (pos > 0) {
-			cout << n->_elem << " ";
-			n = n->_ant;
-			pos--;
-		}
+	  Nodo* n = _ult;
+	  unsigned int pos;
+	  pos = _numElems;
+      while (pos > 0) {
+		  cout << n->_elem << " ";
+		  n = n->_ant;
+		  pos--;
+	  }	   
 	}
 
 
@@ -219,7 +191,7 @@ public:
 			n = n->_ant;
 		}
 	}
-
+	
 
 
 	/** Constructor; operación listaVacia. */
@@ -231,9 +203,9 @@ public:
 
 	 @param elem Elemento que se añade en la cabecera de la lista.
 	*/
-	void pon_ppio(const T& elem) {
+	void pon_ppio (const T &elem) {
 		_prim = insertaElem(elem, NULL, _prim);
-		_numElems++;
+		_numElems ++;
 		if (_ult == NULL) // lista vacia
 			_ult = _prim;
 	}
@@ -243,21 +215,21 @@ public:
 
 	 @param elem Elemento que se añade al final de la lista.
 	*/
-	void pon_final(const T& elem) {
+	void pon_final(const T &elem) {
 		_ult = insertaElem(elem, _ult, NULL);
-		_numElems++;
-		if (_prim == NULL)
+		_numElems ++;
+		if (_prim == NULL) 
 			_prim = _ult;
 	}
 
 	/**
 	 Devuelve el valor almacenado en la cabecera de la
 	 Lista. Observadora parcial.
-
+	 
 	 error: al preguntar por el primero de una lista vacía
 	 @return Elemento en la cabecera de la Lista.
 	 */
-	const T& primero() const {
+	const T &primero() const {
 		if (esVacia())
 			throw EListaVacia();
 		return _prim->_elem;
@@ -266,11 +238,11 @@ public:
 	/**
 	 Devuelve el valor almacenado en la última posición de la Lista (a la "derecha").
 	 Observadora parcial.
-
+	 
 	 error: al preguntar por el último de una lista vacía
 	 @return Elemento en la cola de la Lista.
 	 */
-	const T& ultimo() const {
+	const T &ultimo() const {
 		if (esVacia())
 			throw EListaVacia();
 		return _ult->_elem;
@@ -279,7 +251,7 @@ public:
 	/**
 	 Devuelve el elemento i-ésimo de la lista, teniendo
 	 en cuenta que el primer elemento (primero())
-	 es el elemento situado en la posición 0 y
+	 es el elemento situado en la posición 0 y 
 	 que el último (ultimo()) está en numElems()-1,
 	 es decir, idx está en [0..numElems()-1].
 	 Operación observadora parcial que puede fallar
@@ -291,10 +263,10 @@ public:
 	 error: si idx >= _numElems
 	 @return Elemento en la posición idx de la Lista.
 	*/
-	const T& elem(unsigned int idx) const {
+	const T &elem(unsigned int idx) const {
 		if (idx >= _numElems)
-			throw EAccesoInvalido();
-		Nodo* aux = _prim;
+			throw EAccesoInvalido(); 
+		Nodo *aux = _prim;
 		for (unsigned int i = 0; i < idx; ++i)
 			aux = aux->_sig;
 		return aux->_elem;
@@ -309,27 +281,27 @@ public:
 	void quita_ppio() {
 		if (esVacia())
 			throw EListaVacia();
-		Nodo* aBorrar = _prim;
+		Nodo *aBorrar = _prim;
 		_prim = _prim->_sig;
 		borraElem(aBorrar);
-		_numElems--;
-		if (_prim == NULL)
+		_numElems --;
+		if (_prim == NULL) 
 			_ult = NULL;
 	}
 
 	/**
 	 Elimina el último elemento de la Lista. Observadora parcial.
-
+	 
 	 error: intentar eliminar en una Lista vacía.
 	*/
 	void quita_final() {
 		if (esVacia())
 			throw EListaVacia();
-		Nodo* aBorrar = _ult;
+		Nodo *aBorrar = _ult;
 		_ult = _ult->_ant;
 		borraElem(aBorrar);
-		_numElems--;
-		if (_ult == NULL)
+		_numElems --;
+		if (_ult == NULL) 
 			_prim = NULL;
 	}
 
@@ -341,7 +313,7 @@ public:
 	bool esVacia() const {
 		return _prim == NULL;
 	}
-
+	
 
 	/**
 	 Devuelve el número de elementos que hay en la lista (observadora).
@@ -362,12 +334,12 @@ public:
 
 
 	/** Constructor copia */
-	Lista(const Lista<T>& other) {
+	Lista(const Lista<T> &other) {
 		copia(other);
 	}
 
 	/** Operador de asignación */
-	Lista<T>& operator=(const Lista<T>& other) {
+	Lista<T> &operator=(const Lista<T> &other) {
 		if (this != &other) {
 			libera();
 			copia(other);
@@ -376,13 +348,13 @@ public:
 	}
 
 	/** Operador de comparación. */
-	bool operator==(const Lista<T>& rhs) const {
+	bool operator==(const Lista<T> &rhs) const {
 		bool iguales;
 		if (_numElems != rhs._numElems)
 			iguales = false;
 		else {
-			Nodo* p1 = _prim;
-			Nodo* p2 = rhs._prim;
+			Nodo *p1 = _prim;
+			Nodo *p2 = rhs._prim;
 			while ((p1 != NULL) && (p2 != NULL) && (p1->_elem == p2->_elem)) {
 				p1 = p1->_sig;
 				p2 = p2->_sig;
@@ -392,7 +364,7 @@ public:
 		return iguales;
 	}
 
-	bool operator!=(const Lista<T>& rhs) const {
+	bool operator!=(const Lista<T> &rhs) const {
 		return !(*this == rhs);
 	}
 
@@ -413,16 +385,16 @@ public:
 			_act = _act->_sig;
 		}
 
-		const T& elem() const {
+		const T &elem() const {
 			if (_act == NULL) throw EAccesoInvalido();
 			return _act->_elem;
 		}
 
-		bool operator==(const ConstIterator& other) const {
+		bool operator==(const ConstIterator &other) const {
 			return _act == other._act;
 		}
 
-		bool operator!=(const ConstIterator& other) const {
+		bool operator!=(const ConstIterator &other) const {
 			return !(this->operator==(other));
 		}
 
@@ -432,15 +404,15 @@ public:
 		friend class Lista;
 
 		ConstIterator() : _act(NULL) {}
-		ConstIterator(Nodo* act) : _act(act) {}
+		ConstIterator(Nodo *act) : _act(act) {}
 
 		// Puntero al nodo actual del recorrido
-		Nodo* _act;
+		Nodo *_act;
 	};
 
 	/**
 	 Devuelve el iterador de lectura al principio de la lista.
-
+	 
 	 @return iterador al principio de la lista;
 	 coincidirá con final() si la lista está vacía.
 	 */
@@ -470,21 +442,21 @@ public:
 			_act = _act->_sig;
 		}
 
-		const T& elem() const {
+		const T &elem() const {
 			if (_act == NULL) throw EAccesoInvalido();
 			return _act->_elem;
 		}
 
-		void set(const T& elem) {
+		void set(const T &elem) {
 			if (_act == NULL) throw EAccesoInvalido();
 			_act->_elem = elem;
 		}
 
-		bool operator==(const Iterator& other) const {
+		bool operator==(const Iterator &other) const {
 			return _act == other._act;
 		}
 
-		bool operator!=(const Iterator& other) const {
+		bool operator!=(const Iterator &other) const {
 			return !(this->operator==(other));
 		}
 	protected:
@@ -492,10 +464,10 @@ public:
 		friend class Lista;
 
 		Iterator() : _act(NULL) {}
-		Iterator(Nodo* act) : _act(act) {}
+		Iterator(Nodo *act) : _act(act) {}
 
 		// Puntero al nodo actual del recorrido
-		Nodo* _act;
+		Nodo *_act;
 	};
 
 	/**
@@ -504,7 +476,7 @@ public:
 	 @return iterador al principio de la lista;
 	 coincidirá con end() si la lista está vacía.
 	 */
-	Iterator begin() {
+	Iterator begin()  { 
 		// no lo declaramos como const porque el efecto del iterador va a ser poder modificar la lista
 		// (aunque eso no ocurra en este método)
 		return Iterator(_prim);
@@ -533,12 +505,12 @@ public:
 	 @param elem Valor del elemento a insertar.
 	 @param it Punto en el que insertar el elemento.
 	 */
-	void insertar(const T& elem, const Iterator& it) {
-		if (_prim == it._act)
+	void insertar(const T &elem, const Iterator &it) {
+		if (_prim == it._act) 
 			pon_ppio(elem);
-		else if (it._act == NULL)
+		else if (it._act == NULL) 
 			pon_final(elem);
-		else {
+		else {  
 			insertaElem(elem, it._act->_ant, it._act);
 			_numElems++;
 		}
@@ -557,18 +529,18 @@ public:
 	 @return Nuevo iterador colocado en el elemento siguiente
 	 al borrado (será end() si el elemento que se borró era el último de la lista).
 	 */
-	Iterator eliminar(const Iterator& it) {
+	Iterator eliminar(const Iterator &it) {
 		if (it._act == NULL) throw EAccesoInvalido();
-		if (it._act == _prim) {
+		if (it._act == _prim) { 
 			quita_ppio();
-			return Iterator(_prim);
-		}
-		else if (it._act == _ult) {
+			return Iterator(_prim); 
+		} 
+		else if (it._act == _ult) { 
 			quita_final();
-			return Iterator();
-		}
+			return Iterator(); 
+		} 
 		else {
-			Nodo* sig = it._act->_sig;
+			Nodo *sig = it._act->_sig;
 			borraElem(it._act);
 			_numElems--;
 			return Iterator(sig);
@@ -578,4 +550,3 @@ public:
 };
 
 #endif // __LISTA_H
-
